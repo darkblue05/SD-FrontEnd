@@ -14,8 +14,15 @@ const AppBarContent = props => {
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
 
   return (
-    <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Box className='actions-left' sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
+    <Box
+      sx={{
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}
+    >
+      <Box className='actions-left' sx={{ mr: 2, display: 'flex', alignItems: 'center', color: 'white' }}>
         {hidden ? (
           <IconButton color='inherit' sx={{ ml: -2.75 }} onClick={toggleNavVisibility}>
             <Icon fontSize='1.5rem' icon='tabler:menu-2' />
@@ -23,6 +30,7 @@ const AppBarContent = props => {
         ) : null}
 
         <ModeToggler settings={settings} saveSettings={saveSettings} />
+        <img height={40} style={{ marginLeft: 30 }} src='/images/favicon.png' />
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         <UserDropdown settings={settings} />

@@ -5,7 +5,7 @@ import Box from '@mui/material/Box'
 // Styled component for Blank Layout component
 const BlankLayoutWrapper = styled(Box)(({ theme }) => ({
   height: '100vh',
-
+  backgroundColor: '#d2f0ed',
   // For V1 Blank layout pages
   '& .content-center': {
     display: 'flex',

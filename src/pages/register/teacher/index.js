@@ -31,7 +31,6 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/router'
-import { Grid } from '@mui/material'
 
 // ** Styled Components
 const LoginIllustration = styled('img')(({ theme }) => ({
@@ -39,6 +38,14 @@ const LoginIllustration = styled('img')(({ theme }) => ({
   maxHeight: 300,
   marginLeft: -50,
   marginTop: -60
+}))
+
+const LoginImage = styled('img')(({ theme }) => ({
+  zIndex: 2,
+  height: 150,
+  marginTop: 20,
+  marginLeft: 40,
+  marginBottom: 20
 }))
 
 const RightWrapper = styled(Box)(({ theme }) => ({
@@ -65,14 +72,6 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   '& .MuiFormControlLabel-label': {
     color: theme.palette.text.secondary
   }
-}))
-
-const LoginImage = styled('img')(({ theme }) => ({
-  zIndex: 2,
-  height: 150,
-  marginLeft: -10,
-  marginTop: 20,
-  marginBottom: 20
 }))
 
 const Register = () => {
@@ -120,40 +119,50 @@ const Register = () => {
             justifyContent: 'center'
           }}
         >
-          <Grid container sx={{ textAlign: 'center' }}>
-            <Grid item xs={12}>
-              <LoginImage src='/images/favicon.png' />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant='h4' sx={{ my: 10 }}>
-                ¿Cuál es tu Rol?
+          <Box sx={{ width: '100%', maxWidth: 400 }}>
+            <LoginImage src='/images/favicon.png' />
+            <Box sx={{ my: 6 }}>
+              <Typography variant='h3' sx={{ mb: 1.5 }}>
+                Registro Profesor
               </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                variant='contained'
-                color='primary'
-                sx={{ mb: 4 }}
-                onClick={() => {
-                  router.push('/register/teacher')
+            </Box>
+            <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
+              <CustomTextField autoFocus fullWidth sx={{ mb: 4 }} label='Nombres' placeholder='johndoe' />
+              <CustomTextField autoFocus fullWidth sx={{ mb: 4 }} label='Apellidos' placeholder='johndoe' />
+              <CustomTextField fullWidth label='Email' sx={{ mb: 4 }} placeholder='user@email.com' />
+              <CustomTextField
+                fullWidth
+                label='Password'
+                id='auth-login-v2-password'
+                type={showPassword ? 'text' : 'password'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton
+                        edge='end'
+                        onMouseDown={e => e.preventDefault()}
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        <Icon fontSize='1.25rem' icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
+                      </IconButton>
+                    </InputAdornment>
+                  )
                 }}
-              >
-                Profesor
+              />
+              <CustomTextField fullWidth label='Teléfono' sx={{ mb: 4 }} placeholder='986 XXX XX XX' />
+              <CustomTextField fullWidth label='Cedula Profesional' sx={{ mb: 4 }} placeholder='KHDHKJXXXXXXX' />
+
+              <Button fullWidth type='submit' variant='contained' sx={{ mb: 4 }} onClick={e => router.push('/login')}>
+                Registrarse
               </Button>
-            </Grid>
-            <Grid item xs={12}>
-              <Button
-                variant='contained'
-                color='secondary'
-                sx={{ mb: 4 }}
-                onClick={() => {
-                  router.push('/register/tutor')
-                }}
-              >
-                Padre de familia/Tutor
-              </Button>
-            </Grid>
-          </Grid>
+              <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
+                <Typography sx={{ color: 'text.secondary', mr: 2 }}>¿Tiene Cuenta?</Typography>
+                <Typography component={LinkStyled} href='/login'>
+                  Inicie Sessión
+                </Typography>
+              </Box>
+            </form>
+          </Box>
         </Box>
       </RightWrapper>
     </Box>

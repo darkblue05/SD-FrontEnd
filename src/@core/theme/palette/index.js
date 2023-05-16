@@ -1,6 +1,7 @@
 const DefaultPalette = (mode, skin) => {
   // ** Vars
   const whiteColor = '#FFF'
+  const blueBg = '#d2f9ed'
   const lightColor = '47, 43, 61'
   const darkColor = '208, 212, 241'
   const darkPaperBgColor = '#2F3349'
@@ -8,7 +9,7 @@ const DefaultPalette = (mode, skin) => {
 
   const defaultBgColor = () => {
     if (skin === 'bordered' && mode === 'light') {
-      return whiteColor
+      return blueBg
     } else if (skin === 'bordered' && mode === 'dark') {
       return darkPaperBgColor
     } else if (mode === 'light') {
@@ -19,11 +20,11 @@ const DefaultPalette = (mode, skin) => {
   return {
     customColors: {
       dark: darkColor,
-      main: mainColor,
+      main: blueBg,
       light: lightColor,
-      lightPaperBg: whiteColor,
+      lightPaperBg: blueBg,
       darkPaperBg: darkPaperBgColor,
-      bodyBg: mode === 'light' ? '#F8F7FA' : '#25293C',
+      bodyBg: blueBg,
       trackBg: mode === 'light' ? '#F1F0F2' : '#363B54',
       avatarBg: mode === 'light' ? '#DBDADE' : '#4A5072',
       tableHeaderBg: mode === 'light' ? '#F6F6F7' : '#4A5072'
@@ -34,15 +35,15 @@ const DefaultPalette = (mode, skin) => {
       white: whiteColor
     },
     primary: {
-      light: '#17E83D',
-      main: '#12B830',
-      dark: '#0A691C',
+      light: '#3ea68d',
+      main: '#29987e',
+      dark: '#084f3a',
       contrastText: whiteColor
     },
     secondary: {
-      light: '#B2B4B8',
-      main: '#A8AAAE',
-      dark: '#949699',
+      light: '#a75436',
+      main: '#984529',
+      dark: '#501311',
       contrastText: whiteColor
     },
     error: {

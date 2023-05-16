@@ -8,7 +8,7 @@ import AppBar from 'src/@core/layouts/components/blank-layout-with-appBar'
 // Styled component for Blank Layout with AppBar component
 const BlankLayoutWithAppBarWrapper = styled(Box)(({ theme }) => ({
   height: '100vh',
-
+  backgroundColor: '#d2f0ed',
   // For V1 Blank layout pages
   '& .content-center': {
     display: 'flex',

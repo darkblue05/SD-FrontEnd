@@ -20,6 +20,7 @@ import Footer from './components/shared-components/footer'
 import ScrollToTop from 'src/@core/components/scroll-to-top'
 
 const VerticalLayoutWrapper = styled('div')({
+  backgroundColor: '#d2f0ed',
   height: '100%',
   display: 'flex'
 })

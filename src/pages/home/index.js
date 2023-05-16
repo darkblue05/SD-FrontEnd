@@ -4,30 +4,70 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
+import { DataGrid } from '@mui/x-data-grid'
+import { Box } from '@mui/material'
+import OptionsMenu from 'src/@core/components/option-menu'
+// ** Icon Imports
+import Icon from 'src/@core/components/icon'
+import { IconButton } from '@mui/material'
+const columns = [
+  { field: 'code', headerName: 'Código', flex: 0.1 },
+  {
+    field: 'name',
+    headerName: 'nombre',
+    flex: 0.15
+  },
+  {
+    field: 'actions',
+    headerName: 'Acciones',
+    flex: 0.05,
+    minWidth: 70,
+    renderCell: row => {
+      return (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <OptionsMenu
+            options={[
+              {
+                icon: (
+                  <IconButton color='primary' aria-label='upload picture' component='label'>
+                    <Icon icon={'mdi:calendar-check'} />
+                  </IconButton>
+                ),
+                text: 'Pasar Lista'
+              },
+              {
+                icon: (
+                  <IconButton color='primary' aria-label='upload picture' component='label'>
+                    <Icon icon={'heroicons:wrench-screwdriver-solid'} />
+                  </IconButton>
+                ),
+                text: 'Detalles'
+              },
+              {
+                icon: (
+                  <IconButton color='primary' aria-label='upload picture' component='label'>
+                    <Icon icon={'bi:trash-fill'} />
+                  </IconButton>
+                ),
+                text: 'Eliminar'
+              }
+            ]}
+          />
+        </Box>
+      )
+    }
+  }
+]
+const rows = [{ code: 'dkad', name: 'español', id: 1 }]
 
 const Home = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <Card>
-          <CardHeader title='Kick start your project 🚀'></CardHeader>
+        <Card sx={{ minHeight: 300 }}>
+          <CardHeader title='Mis Clases'></CardHeader>
           <CardContent>
-            <Typography sx={{ mb: 2 }}>All the best for your new project.</Typography>
-            <Typography>
-              Please make sure to read our Template Documentation to understand where to go from here and how to use our
-              template.
-            </Typography>
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid item xs={12}>
-        <Card>
-          <CardHeader title='ACL and JWT 🔒'></CardHeader>
-          <CardContent>
-            <Typography sx={{ mb: 2 }}>
-              Access Control (ACL) and Authentication (JWT) are the two main security features of our template and are implemented in the starter-kit as well.
-            </Typography>
-            <Typography>Please read our Authentication and ACL Documentations to get more out of them.</Typography>
+            <DataGrid sx={{ minHeight: 300 }} rowHeight={50} rows={rows} columns={columns} />
           </CardContent>
         </Card>
       </Grid>
