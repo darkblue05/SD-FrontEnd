@@ -11,7 +11,8 @@ module.exports = {
   webpack: config => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      apexcharts: path.resolve(__dirname, './node_modules/apexcharts-clevision')
+      apexcharts: path.resolve(__dirname, './node_modules/apexcharts-clevision'),
+      '@axios': path.resolve(__dirname, './src/configs/axios')
     }
 
     return config

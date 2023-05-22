@@ -254,6 +254,5 @@ const LoginPage = () => {
   )
 }
 LoginPage.getLayout = page => <BlankLayout>{page}</BlankLayout>
-LoginPage.guestGuard = true
 
 export default LoginPage

@@ -15,6 +15,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import { styled, useTheme } from '@mui/material/styles'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
+import { useForm, Controller } from 'react-hook-form'
 
 // ** Custom Component Import
 import CustomTextField from 'src/@core/components/mui/text-field'
@@ -31,6 +32,14 @@ import { useSettings } from 'src/@core/hooks/useSettings'
 // ** Demo Imports
 import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
 import { useRouter } from 'next/router'
+import useRegisterTeacher from 'src/hooks/Register/useRegisterTeacher'
+import { FormControl } from '@mui/material'
+import * as yup from 'yup'
+import { FormHelperText } from '@mui/material'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { InputLabel } from '@mui/material'
+import { TextField } from '@mui/material'
+import { OutlinedInput } from '@mui/material'
 
 // ** Styled Components
 const LoginIllustration = styled('img')(({ theme }) => ({
@@ -89,6 +98,37 @@ const Register = () => {
 
   const router = useRouter()
 
+  const { register } = useRegisterTeacher()
+
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .email('Correo electrónico debe de ser un correo válido')
+      .required('Correo electrónico es requerido'),
+    password: yup.string().min(5, 'La contraseña debe tener al menos 5 caracteres').required('Contraseña es requerida'),
+    name: yup.string().required('Nombre es requerido'),
+    lastname: yup.string().required('Apellido es requerido')
+  })
+
+  const defaultValues = {
+    name: '',
+    lastname: '',
+    password: '',
+    email: '',
+    license: ''
+  }
+
+  const {
+    control,
+    setError,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    defaultValues,
+    mode: 'onSummit',
+    resolver: yupResolver(schema)
+  })
+
   return (
     <Box className='content-right' sx={{ backgroundColor: 'background.paper' }}>
       {!hidden ? (
@@ -126,33 +166,121 @@ const Register = () => {
                 Registro Profesor
               </Typography>
             </Box>
-            <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-              <CustomTextField autoFocus fullWidth sx={{ mb: 4 }} label='Nombres' placeholder='johndoe' />
-              <CustomTextField autoFocus fullWidth sx={{ mb: 4 }} label='Apellidos' placeholder='johndoe' />
-              <CustomTextField fullWidth label='Email' sx={{ mb: 4 }} placeholder='user@email.com' />
-              <CustomTextField
-                fullWidth
-                label='Password'
-                id='auth-login-v2-password'
-                type={showPassword ? 'text' : 'password'}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        edge='end'
-                        onMouseDown={e => e.preventDefault()}
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        <Icon fontSize='1.25rem' icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} />
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }}
-              />
-              <CustomTextField fullWidth label='Teléfono' sx={{ mb: 4 }} placeholder='986 XXX XX XX' />
-              <CustomTextField fullWidth label='Cedula Profesional' sx={{ mb: 4 }} placeholder='KHDHKJXXXXXXX' />
-
-              <Button fullWidth type='submit' variant='contained' sx={{ mb: 4 }} onClick={e => router.push('/login')}>
+            <form noValidate autoComplete='off' onSubmit={handleSubmit(register)}>
+              <FormControl fullWidth sx={{ mb: 4 }}>
+                <Controller
+                  name='name'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      autoFocus
+                      label={'Nombre'}
+                      value={value}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      error={Boolean(errors.name)}
+                      placeholder='Fernando'
+                    />
+                  )}
+                />
+                {errors.name && <FormHelperText sx={{ color: 'error.main' }}>{errors.name.message}</FormHelperText>}
+              </FormControl>
+              <FormControl fullWidth sx={{ mb: 4 }}>
+                <Controller
+                  name='lastname'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      autoFocus
+                      label={'Apellido'}
+                      value={value}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      error={Boolean(errors.lastname)}
+                      placeholder='Diaz'
+                    />
+                  )}
+                />
+                {errors.lastname && (
+                  <FormHelperText sx={{ color: 'error.main' }}>{errors.lastname.message}</FormHelperText>
+                )}
+              </FormControl>
+              <FormControl fullWidth sx={{ mb: 4 }}>
+                <Controller
+                  name='email'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      autoFocus
+                      label={'Email'}
+                      value={value}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      error={Boolean(errors.email)}
+                      placeholder='ejemplo@correo.com'
+                    />
+                  )}
+                />
+                {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
+              </FormControl>
+              <FormControl fullWidth sx={{ mb: 4 }}>
+                <InputLabel htmlFor='auth-login-v2-password' error={Boolean(errors.password)}>
+                  {'Contraseña'}
+                </InputLabel>
+                <Controller
+                  name='password'
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <OutlinedInput
+                      value={value}
+                      onBlur={onBlur}
+                      label={'Contraseña'}
+                      onChange={onChange}
+                      id='auth-login-v2-password'
+                      error={Boolean(errors.password)}
+                      type={showPassword ? 'text' : 'password'}
+                      endAdornment={
+                        <InputAdornment position='end'>
+                          <IconButton
+                            edge='end'
+                            onMouseDown={e => e.preventDefault()}
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            <Icon icon={showPassword ? 'tabler:eye' : 'tabler:eye-off'} fontSize={20} />
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  )}
+                />
+                {errors.password && (
+                  <FormHelperText sx={{ color: 'error.main' }} id=''>
+                    {errors.password.message}
+                  </FormHelperText>
+                )}
+              </FormControl>
+              <FormControl fullWidth sx={{ mb: 4 }}>
+                <Controller
+                  name='license'
+                  control={control}
+                  rules={{ required: false }}
+                  render={({ field: { value, onChange, onBlur } }) => (
+                    <TextField
+                      autoFocus
+                      label={'Cédula Profesional'}
+                      value={value}
+                      onBlur={onBlur}
+                      onChange={onChange}
+                      placeholder='DFHAFDXXXX'
+                    />
+                  )}
+                />
+              </FormControl>
+              <Button fullWidth type='submit' variant='contained' sx={{ mb: 4 }}>
                 Registrarse
               </Button>
               <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -169,6 +297,5 @@ const Register = () => {
   )
 }
 Register.getLayout = page => <BlankLayout>{page}</BlankLayout>
-Register.guestGuard = true
 
 export default Register

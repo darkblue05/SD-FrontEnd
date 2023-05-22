@@ -151,6 +151,5 @@ const ForgotPassword = () => {
   )
 }
 ForgotPassword.getLayout = page => <BlankLayout>{page}</BlankLayout>
-ForgotPassword.guestGuard = true
 
 export default ForgotPassword

@@ -5,7 +5,7 @@ import { createContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
 // ** Axios
-import axios from 'axios'
+import axios from '@axios'
 
 // ** Config
 import authConfig from 'src/configs/auth'
@@ -28,50 +28,57 @@ const AuthProvider = ({ children }) => {
 
   // ** Hooks
   const router = useRouter()
+  // useEffect(() => {
+  //   const initAuth = async () => {
+  //     const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)
+  //     if (storedToken) {
+  //       setLoading(true)
+  //       await axios
+  //         .get(authConfig.meEndpoint, {
+  //           headers: {
+  //             Authorization: storedToken
+  //           }
+  //         })
+  //         .then(async response => {
+  //           setLoading(false)
+  //           setUser({ ...response.data.data.userData })
+  //         })
+  //         .catch(() => {
+  //           localStorage.removeItem('userData')
+  //           localStorage.removeItem('refreshToken')
+  //           localStorage.removeItem('accessToken')
+  //           setUser(null)
+  //           setLoading(false)
+  //           if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
+  //             router.replace('/login')
+  //           }
+  //         })
+  //     } else {
+  //       setLoading(false)
+  //     }
+  //   }
+  //   initAuth()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
+
   useEffect(() => {
-    const initAuth = async () => {
-      const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)
-      if (storedToken) {
-        setLoading(true)
-        await axios
-          .get(authConfig.meEndpoint, {
-            headers: {
-              Authorization: storedToken
-            }
-          })
-          .then(async response => {
-            setLoading(false)
-            setUser({ ...response.data.userData })
-          })
-          .catch(() => {
-            localStorage.removeItem('userData')
-            localStorage.removeItem('refreshToken')
-            localStorage.removeItem('accessToken')
-            setUser(null)
-            setLoading(false)
-            if (authConfig.onTokenExpiration === 'logout' && !router.pathname.includes('login')) {
-              router.replace('/login')
-            }
-          })
-      } else {
-        setLoading(false)
-      }
-    }
-    initAuth()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const userData = window.localStorage.getItem('userData')
+    setUser(JSON.parse(userData))
   }, [])
 
   const handleLogin = (params, errorCallback) => {
     axios
       .post(authConfig.loginEndpoint, params)
       .then(async response => {
-        params.rememberMe
-          ? window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.accessToken)
-          : null
-        const returnUrl = router.query.returnUrl
-        setUser({ ...response.data.userData })
-        params.rememberMe ? window.localStorage.setItem('userData', JSON.stringify(response.data.userData)) : null
-        const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
+        // params.rememberMe
+        //   ? window.localStorage.setItem(authConfig.storageTokenKeyName, response.data.accessToken)
+        //   : null
+        // const returnUrl = router.query.returnUrl
+        setUser({ ...response.data.data.user })
+        window.localStorage.setItem('userData', JSON.stringify(response.data.data.user))
+        console.log(response)
+        window.localStorage.setItem('type', response.data.data.user.type)
+        const redirectURL = response.data.data.user.type === 'TEACHER' ? 'teacher/class' : 'parent/student'
         router.replace(redirectURL)
       })
       .catch(err => {
@@ -82,6 +89,7 @@ const AuthProvider = ({ children }) => {
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('userData')
+    window.localStorage.removeItem('type')
     window.localStorage.removeItem(authConfig.storageTokenKeyName)
     router.push('/login')
   }
