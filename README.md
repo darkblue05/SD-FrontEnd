@@ -76,5 +76,6 @@ To run test\
 
 # Run Develop
 
-To run app
-` npm run rev
+To run Develop\
+ `     npm run dev
+`
