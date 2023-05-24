@@ -3,22 +3,22 @@ import axios from '@axios'
 
 const URL_API = '/student-class'
 
-export const fetchAllClass = createAsyncThunk('class/fetchAll', async ({ id }) => {
+export const fetchAllClass = createAsyncThunk('student-class/fetchAll', async ({ id }) => {
   const response = await axios.get(`${URL_API}/${id}`)
   return response.data
 })
 
-export const fetchOne = createAsyncThunk('class/fetchOne', async ({ id }) => {
+export const fetchOne = createAsyncThunk('studen-class/fetchOne', async ({ id }) => {
   const response = await axios.get(`${URL_API}/one/${id}`)
   return response.data
 })
 
-export const deleteOne = createAsyncThunk('class/deleteOne', async ({ id }) => {
+export const deleteOne = createAsyncThunk('student-class/deleteOne', async ({ id }) => {
   const response = await axios.delete(`${URL_API}/${id}`)
   return response.data
 })
 
-export const createOne = createAsyncThunk('class/createOne', async ({ id, data }) => {
+export const createOne = createAsyncThunk('student-class/createOne', async ({ id, data }) => {
   const response = await axios.post(`${URL_API}/${id}`, data)
   return response.data
 })

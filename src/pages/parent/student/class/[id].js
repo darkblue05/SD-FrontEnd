@@ -7,14 +7,18 @@ import CardContent from '@mui/material/CardContent'
 import { DataGrid } from '@mui/x-data-grid'
 import { Box, Button } from '@mui/material'
 import OptionsMenu from 'src/@core/components/option-menu'
+import { TextField } from '@mui/material'
+
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 import { IconButton } from '@mui/material'
-import useClass from 'src/hooks/Class/useClass'
-import { useEffect } from 'react'
+import useClass from 'src/hooks/Student/useClass'
+
+import { useEffect, useState } from 'react'
 
 const Class = () => {
-  const { fetchAll, deleteOneClass, store, router } = useClass()
+  const { fetchAll, deleteOneClass, store, router, createOneClass } = useClass()
+  const [code, setCode] = useState('')
 
   return (
     <Grid container spacing={6}>
@@ -52,14 +56,28 @@ const Class = () => {
             />
           </Card>
           <Box sx={{ textAlign: 'center', mb: 4 }}>
-            <Button
-              onClick={() => {
-                router.push('/teacher/class/new')
-              }}
-              variant='contained'
-            >
-              Agregar Clase
-            </Button>
+            <Grid container spacing={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Grid item xs={4} sx={{ background: 'white', p: 2, m: 2 }}>
+                <TextField
+                  variant='standard'
+                  value={code}
+                  onChange={e => {
+                    setCode(e.target.value)
+                  }}
+                  label={'Código de Clase'}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  onClick={() => {
+                    createOneClass({ code })
+                  }}
+                  variant='contained'
+                >
+                  Agregar Clase
+                </Button>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
       </Grid>

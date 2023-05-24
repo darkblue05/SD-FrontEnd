@@ -2,7 +2,7 @@ import { toast } from 'react-hot-toast'
 import { useDispatch, useSelector } from 'react-redux'
 import { useAuth } from '../useAuth'
 
-import { fetchAllClass, createOne, deleteOne, fetchOne } from 'src/store/student-class'
+import { fetchAllClass, createOne, deleteOne, fetchOne } from 'src/store/class'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 
@@ -13,8 +13,7 @@ const useClass = () => {
 
   const fetchAll = async () => {
     try {
-      const userData = JSON.parse(window.localStorage.getItem('userData'))
-      const action = await dispatch(fetchAllClass({ id: userData.id }))
+      const action = await dispatch(fetchAllClass({ id: router.params.id }))
 
       if (fetchAllClass.rejected.match(action)) {
         console.log(action.error)
@@ -26,16 +25,13 @@ const useClass = () => {
 
   const createOneClass = async data => {
     try {
-      const userData = JSON.parse(window.localStorage.getItem('userData'))
-
-      let action = await dispatch(createOne({ id: userData.id, data }))
+      let action = await dispatch(createOne({ id: router.params.id, data }))
 
       if (createOne.fulfilled.match(action)) {
-        toast.success('Clase creada')
-        router.push('/teacher/class')
+        toast.success('Clase añadida')
       } else {
         console.log(action)
-        toast.error('Clase no creada')
+        toast.error('Clase no encontrada')
       }
     } catch (error) {
       console.log(error)
@@ -72,8 +68,10 @@ const useClass = () => {
   }
 
   useEffect(() => {
-    fetchAll()
-  }, [])
+    if (router.isReady) {
+      fetchAll()
+    }
+  }, [router.isReady])
 
   return {
     store,

@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import { DataGrid } from '@mui/x-data-grid'
-import { Box, Button } from '@mui/material'
+import { Box, Button, TextField } from '@mui/material'
 import OptionsMenu from 'src/@core/components/option-menu'
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -14,7 +14,7 @@ import useClass from 'src/hooks/Student/useStudent'
 import { useEffect } from 'react'
 
 const Class = () => {
-  const { fetchAll, deleteOneClass, store, router } = useClass()
+  const { fetchAll, deleteOneClass, store, router, createOneStudent } = useClass()
 
   return (
     <Grid container spacing={6}>
@@ -48,7 +48,15 @@ const Class = () => {
                   renderCell: ({ row }) => {
                     return (
                       <Box sx={{ display: 'flex', justifyContent: 'left' }}>
-                        <IconButton color='primary' aria-label='upload picture' component='label' sx={{ mr: 3 }}>
+                        <IconButton
+                          onClick={() => {
+                            router.push('/parent/student/class/[id]', '/parent/student/class/' + row.id)
+                          }}
+                          color='primary'
+                          aria-label='upload picture'
+                          component='label'
+                          sx={{ mr: 3 }}
+                        >
                           <Icon icon={'mdi:calendar-check'} />
                         </IconButton>
                         <OptionsMenu
